@@ -1,4 +1,4 @@
-(ns clojure.utils.parser)
+(ns clojure.sandbox.parser)
 
 (defn match
   "Create a rule to match a regular expression."

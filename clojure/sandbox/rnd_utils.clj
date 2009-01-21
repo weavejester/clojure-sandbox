@@ -1,5 +1,5 @@
-(ns rnd-utils
-  (:use clojure.utils.parser))
+(ns clojure.sandbox.rnd-utils
+  (:use clojure.sandbox.parser))
 
 (defn rnd-choice
   [coll]

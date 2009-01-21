@@ -1,4 +1,4 @@
-(ns clojure.utils.ppxml
+(ns clojure.sandbox.ppxml
   (:import javax.xml.parsers.DocumentBuilderFactory
            javax.xml.transform.TransformerFactory
            javax.xml.transform.dom.DOMSource
