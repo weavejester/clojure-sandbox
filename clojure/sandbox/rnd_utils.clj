@@ -56,10 +56,22 @@
     (fn [[_ chars _]]
       #(rnd-choice (apply concat chars)))))
 
+(def digit
+  (attach
+    (match #"\\d")
+    (fn [_] #(char-range "0" "9"))))
+
+(def whitespace
+  (attach
+    (match #"\\s")
+    (fn [_] #(rnd-choice " \t\n\f\r"))))
+
 (def single
   (choice literal
           any-char
-          char-class))
+          char-class
+          digit
+          whitespace))
 
 (def zero-or-more
   (attach
