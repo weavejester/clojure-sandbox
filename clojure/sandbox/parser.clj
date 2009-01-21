@@ -9,6 +9,14 @@
         [(re-groups m)
          (.substring src (.end m))]))))
 
+(defn observe
+  "Creates a rule, but doesn't reduce the source if it matches."
+  [re]
+  (let [f (match re)]
+    (fn [src]
+      (let [[m _] (f src)] 
+        [m src]))))
+
 (defn attach
   "Attach a function to transform the result of a rule."
   [rule f]

@@ -18,6 +18,12 @@
   [n]
   (Integer/parseInt n))
 
+(defn char-range
+  [from to]
+  (map char
+    (range (int (first from))
+           (inc (int (first to))))))
+
 (def literal
   (attach
      (match #"(\\.|[^{}.+*()\[\]^$])+")
@@ -29,11 +35,31 @@
     (match #"\.")
     (fn [_] #(rnd-choice "abcdefghijklmnopqrstuvwxyz"))))
 
-(def single
-  (choice literal any-char))
+(defn sequence-of-chars
+  [src]
+  (let [f (match #"((\\.|[^\^\-\[\]\\])+)([^-]|$)")]
+    (if-let [[[_ m _ s] src] (f src)]
+      [(.replace m "\\" "")
+       (str s src)])))
 
-(def char-sequence
-  (match #"(\\.|[^\^\-\[\]])+"))
+(def range-of-chars
+  (attach
+    (match #"(\\.|[^\^\-\[\]\\])-(\\.|[^\^\-\[\]\\])")
+    (fn [[_ from to]] (char-range from to))))
+
+(def char-class
+  (attach
+    (series
+      (match #"\[")
+      (many (choice sequence-of-chars range-of-chars))
+      (match #"\]"))
+    (fn [[_ chars _]]
+      #(rnd-choice (apply concat chars)))))
+
+(def single
+  (choice literal
+          any-char
+          char-class))
 
 (def zero-or-more
   (attach
